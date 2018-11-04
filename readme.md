@@ -1,4 +1,4 @@
-# Window Manager
+# Window Master
 
 This application has the purpose to use the Arduino Mega I/O to check window reed switches.
 
