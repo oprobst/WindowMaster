@@ -10,6 +10,7 @@ Adafruit_ST7735 tft = Adafruit_ST7735(TFT_PIN_CS, TFT_PIN_DC, TFT_PIN_RST); // D
 void displayInit() {
 	//setKNX();
 	tft.initR(INITR_BLACKTAB);   // ST7735-Chip initialisieren
+	tft.setRotation(2);
 	tft.setTextWrap(true);
 	tft.fillScreen(ST7735_BLACK);
 	tft.setTextSize(2);
@@ -23,11 +24,9 @@ void displayInit() {
 	tft.setTextColor(ST7735_WHITE);
 	tft.print("by Oli '18");
 
-	pinMode(LED_ON, OUTPUT);
-	pinMode(LED_ERR, OUTPUT);
+	pinMode(LED, OUTPUT);
 
-	statusLedOn(TRUE);
-	errorLedOn(FALSE);
+	//statusLedOn();
 }
 
 void displayCancelError() {
@@ -58,8 +57,6 @@ short determineWindowState(short reqFloor, short state) {
 }
 
 void paintOpenWindow(short x, short y) {
-	//tft.setCursor(x, y);
-	//tft.print("O:");
 	tft.fillRect(x, y, 8, 8, ST7735_CYAN);
 	tft.drawRect(x, y, 8, 8, ST7735_RED);
 	for (short i = 0; i < 7; i++) {
@@ -72,8 +69,6 @@ void paintOpenWindow(short x, short y) {
 
 }
 void paintClosedWindow(short x, short y) {
-	//tft.setCursor(x, y);
-	//tft.print("C:");
 	tft.fillRect(x, y, 10, 8, ST7735_RED);
 	tft.drawRect(x, y, 10, 8, ST7735_WHITE);
 	tft.drawLine(x, y + 4, x + 2, y + 4, ST7735_WHITE);
@@ -84,8 +79,6 @@ void paintContactFail(short x, short y) {
 	tft.drawTriangle(x + 4, y, x, y + 8, x + 8, y + 8, ST7735_CYAN);
 	tft.drawPixel(x + 4, y + 7, ST7735_CYAN);
 	tft.drawLine(x + 4, y + 2, x + 4, y + 5, ST7735_CYAN);
-	//tft.setCursor(x, y);
-	//tft.print("F:");
 }
 
 void printFloor(char * name, short open, short closed, short malfunction,
@@ -130,7 +123,7 @@ void displayUpdate() {
 			determineWindowState(2, WINDOW_CLOSE),
 			determineWindowState(2, WINDOW_ERROR), 90);
 
-	tft.setCursor(85,10);
+	tft.setCursor(85, 10);
 	tft.setTextSize(1);
 	tft.print(KNX_PA);
 	tft.setCursor(2, 115);
@@ -140,34 +133,40 @@ void displayUpdate() {
 
 	if (lastEvent != 127) {
 		tft.setCursor(2, 140);
-		tft.print("Letztes Event:");
+		tft.print("Letztes Event: ");
 		short state = windowState[lastEvent];
+
+
+		tft.setTextColor(ST7735_YELLOW);
+
 		if (state == WINDOW_OPEN) {
 			paintOpenWindow(2, 150);
+			tft.print(contactGA[lastEvent]);
 		} else if (state == WINDOW_CLOSE) {
 			paintClosedWindow(2, 150);
+			tft.print(contactGA[lastEvent]);
 		} else {
 			paintContactFail(2, 150);
+			tft.print(functionGA[lastEvent]);
 		}
-
-		tft.setCursor(20, 150);
+		tft.setCursor(15, 150);
+		tft.setTextColor(ST7735_WHITE);
 		tft.print(windowName[lastEvent]);
 	}
 
-	for (short i = 0; i < ARRAYSIZE; i++) {
-		if (windowState[i] == WINDOW_ERROR) {
-			errorLedOn(TRUE);
-			break;
-		}
-		errorLedOn(FALSE);
+}
+
+void statusLedOn() {
+	analogWrite(LED, 96);
+}
+
+byte brightness = 0;
+void errorLedOn() {
+	if (brightness < 128) {
+		analogWrite(LED, brightness);
+	} else {
+		analogWrite(LED, (255 - brightness));
 	}
-}
-
-void statusLedOn(short on) {
-	digitalWrite(LED_ON, !on);
-}
-
-void errorLedOn(short on) {
-	digitalWrite(LED_ERR, !on);
+	brightness += 8;
 }
 

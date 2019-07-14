@@ -5,27 +5,25 @@
 #include <Arduino.h>
 #include "WindowMasterConfig.h"
 
-void initTimer(){
-	  noInterrupts();
-	  TCCR1A = 0;
-	  TCCR1B = 0;
-	  TCNT1 = 0;
-	  TCCR1B |= (1<<CS12) | (1<<CS10);
-	  TIMSK1 |= (1 << TOIE1);
-	  interrupts();
+void initTimer() {
+	noInterrupts();
+	TCCR1A = 0;
+	TCCR1B = 0;
+	TCNT1 = 0;
+	TCCR1B |= (1 << CS12) | (1 << CS10);
+	TIMSK1 |= (1 << TOIE1);
+	interrupts();
 }
 
-ISR(TIMER1_OVF_vect)
-{
+ISR(TIMER1_OVF_vect) {
 
-  TCNT1 = 49911;
-  timeUntilDisplayOff--;
-  if (timeUntilDisplayOff == 0){
-	  digitalWrite(LED_DISPLAY, false);
-	  noInterrupts();
-  }
+	TCNT1 = 49911;
+	timeUntilDisplayOff--;
+	if (timeUntilDisplayOff == 0) {
+		digitalWrite(LED_DISPLAY, false);
+		noInterrupts();
+	}
 }
-
 
 void setup() {
 	pinMode(LED_DISPLAY, OUTPUT);
@@ -43,10 +41,17 @@ void loop() {
 		displayUpdate();
 	}
 	delay(50);
-	if (! digitalRead(USER_SWITCH)){
+	if (!digitalRead(USER_SWITCH)) {
 		digitalWrite(LED_DISPLAY, true);
 		TCNT1 = 49911;
 		timeUntilDisplayOff = TIME_UNTIL_DISPLAY_OFF;
 		interrupts();
+	}
+	for (short i = 0; i < ARRAYSIZE; i++) {
+		if (windowState[i] == WINDOW_ERROR) {
+			errorLedOn();
+			break;
+		}
+		statusLedOn();
 	}
 }

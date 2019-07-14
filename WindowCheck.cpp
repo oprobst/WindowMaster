@@ -9,8 +9,7 @@ void initWindowCheck() {
 	for (short i = 0; i < ARRAYSIZE; i++) {
 		pinMode(functionPin[i], INPUT_PULLUP);
 		pinMode(statePin[i], INPUT_PULLUP);
-		if (i == 1)
-			break; //TODO REMOVE me for arduino mega
+
 	}
 }
 
@@ -26,9 +25,6 @@ short checkAllContacts() {
 }
 
 short checkContact(short no) {
-	if (no > 1) { //TODO Remove this if for arduino mega
-		return FALSE;
-	}
 	short state = digitalRead(statePin[no]);
 	short function = digitalRead(functionPin[no]);
 	short result = 0;

@@ -3,14 +3,14 @@
 #include <SPI.h>
 #include "WindowMasterConfig.h"
 
-KnxTpUart knx(&Serial, KNX_PA);
+KnxTpUart knx(&Serial1, KNX_PA);
 
 void initKnx() {
-	Serial.begin(19200, SERIAL_8E1);
+	Serial1.begin(19200, SERIAL_8E1);
 	while (!Serial) {
 		;
 	}
-	if (Serial.available()) {
+	if (Serial1.available()) {
 		knx.uartReset();
 	}
 

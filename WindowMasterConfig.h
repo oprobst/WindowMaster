@@ -52,18 +52,17 @@
 #define TRUE  1
 #define UNDEF 2
 
-#define TFT_PIN_CS   10 // Display CS
-#define TFT_PIN_DC   9  // Display DC
-#define TFT_PIN_RST  12 // Display RST
+#define TFT_PIN_CS   12 // Display CS
+#define TFT_PIN_DC   11  // Display DC
+#define TFT_PIN_RST  10 // Display RST
 
-#define LED_ON  7  // PIN Power LED
-#define LED_ERR 3 // PIN Error LED
-#define LED_DISPLAY 2 // PIN display backlight
-#define USER_SWITCH A0
+#define LED 9 // PIN Error LED
+#define LED_DISPLAY 13 // PIN display backlight
+#define USER_SWITCH 8
 
-#define ARRAYSIZE 20
+#define ARRAYSIZE 19
 
-#define TIME_UNTIL_DISPLAY_OFF 600
+#define TIME_UNTIL_DISPLAY_OFF 120
 
 extern const char * contactGA[ARRAYSIZE];
 

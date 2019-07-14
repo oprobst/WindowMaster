@@ -9,8 +9,8 @@ void displayError (char* reason);
 void displayCancelError();
 void displayUpdate();
 
-void statusLedOn(short on);
-void errorLedOn(short on);
+void statusLedOn();
+void errorLedOn();
 
 void displayWindowState ();
 

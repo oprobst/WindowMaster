@@ -44,27 +44,27 @@ DG_Fenster_Sabo_Kind_2 };
 
 const short windowCount = ARRAYSIZE;
 const short isOnfloor[] = { 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2,
-		2, 2, 2 };
+		2, 2 };
 
-//Arduino MEGA ports for comm: SPI >=50; Serial 0-1, 18-19; --> Do not use 18/19 and 38/39 for window check.
-const short functionPin[] = { 4, 5, 30, 31, 32, 33, 34, 35, 36, 37, 40, 41, 42,
-		43, 44, 45, 46, 47, 48 };
-const short statePin[] = { 6, 8, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 20, 21,
-		22, 23, 24, 25, 26 };
+//Arduino MEGA ports for comm: SPI >=50; Serial 0-1, 18-19; --> Do not use 18/19, 20/21 for window check.
+const short statePin[] = { 4, 6, 14, 16, 22, 24, 26, 28, 30, 32, 34, 36, 38,
+		40, 42, 44, 46, 48, 54 }; //, 56, 58, 60, 62, 64, 66
+const short functionPin[] = { 3, 5, 15, 17, 23, 25, 27, 29, 31, 33, 35, 37, 39, 41,
+		43, 45, 47, 49, 55 }; //, 57, 59, 61, 63, 65, 67
 const char * windowName[] = { "Sauna", "Technikraum", "Terrassentuer",
 		"Werkstatt", "Garagenkeller", "Kueche", "Kueche Tuer", "WZ Terrasse",
-		"WZ Balkon", "Gaeste Garten", "GaesteNord", "Gaeste WC", "Nicos Zimmer",
+		"WZ Balkon", "Gaeste Garten", "Gaeste Nord", "Gaeste WC", "Nicos Zimmer",
 		"Umkleide", "Schlafzimmer", "Flur Gaube", "Bad Gaube", "Bad Nord",
 		"Bastis Zimmer" };
 
 short windowState[] = { WINDOW_UNDEF, WINDOW_UNDEF, WINDOW_UNDEF, WINDOW_UNDEF,
-		WINDOW_UNDEF,
-		WINDOW_UNDEF, WINDOW_UNDEF, WINDOW_UNDEF, WINDOW_UNDEF, WINDOW_UNDEF,
-		WINDOW_UNDEF, WINDOW_UNDEF, WINDOW_UNDEF, WINDOW_UNDEF, WINDOW_UNDEF,
-		WINDOW_UNDEF, WINDOW_UNDEF, WINDOW_UNDEF, WINDOW_UNDEF, WINDOW_UNDEF };
+WINDOW_UNDEF,
+WINDOW_UNDEF, WINDOW_UNDEF, WINDOW_UNDEF, WINDOW_UNDEF, WINDOW_UNDEF,
+WINDOW_UNDEF, WINDOW_UNDEF, WINDOW_UNDEF, WINDOW_UNDEF, WINDOW_UNDEF,
+WINDOW_UNDEF, WINDOW_UNDEF, WINDOW_UNDEF, WINDOW_UNDEF };
 
 long eventsSinceReset = 0;
 
 short lastEvent = 127;
 
-extern int timeUntilDisplayOff = TIME_UNTIL_DISPLAY_OFF;
+int timeUntilDisplayOff = TIME_UNTIL_DISPLAY_OFF;
