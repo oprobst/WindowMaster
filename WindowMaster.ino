@@ -2,8 +2,12 @@
 #include "UI.h"
 #include "KNX.h"
 #include "WindowCheck.h"
+#include "CurrentCheck.h"
 #include <Arduino.h>
 #include "WindowMasterConfig.h"
+#define OFF 0
+#define WINDOW 1
+#define CURRENT 2
 
 void initTimer() {
 	noInterrupts();
@@ -36,13 +40,33 @@ void setup() {
 	initTimer();
 }
 
+
 void loop() {
-	if (checkAllContacts()) {
+
+	short show = OFF;
+	if (checkAllContacts() && show == WINDOW) {
 		displayUpdate();
 	}
+	if (checkAllCurrents() && show == CURRENT){
+		displayCurrentUpdate();
+	}
+
 	delay(50);
 	if (!digitalRead(USER_SWITCH)) {
-		digitalWrite(LED_DISPLAY, true);
+		if (show == OFF) {
+			show = WINDOW;
+			digitalWrite(LED_DISPLAY, true);
+			delay (500);
+		} else if (show == WINDOW){
+			show = CURRENT;
+			digitalWrite(LED_DISPLAY, true);
+			delay (500);
+		} else {
+			show = OFF;
+			digitalWrite(LED_DISPLAY, false);
+			delay (500);
+		}
+
 		TCNT1 = 49911;
 		timeUntilDisplayOff = TIME_UNTIL_DISPLAY_OFF;
 		interrupts();

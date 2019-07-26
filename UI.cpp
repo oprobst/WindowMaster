@@ -81,6 +81,7 @@ void paintContactFail(short x, short y) {
 	tft.drawLine(x + 4, y + 2, x + 4, y + 5, ST7735_CYAN);
 }
 
+
 void printFloor(char * name, short open, short closed, short malfunction,
 		short pxOffset) {
 	tft.setTextSize(1);
@@ -100,6 +101,16 @@ void printFloor(char * name, short open, short closed, short malfunction,
 	tft.print(closed);
 	tft.setCursor(110, pxOffset);
 	tft.print(malfunction);
+}
+void printCurrent(char * name, float valueCurrent, short pxOffset) {
+	tft.setTextSize(1);
+
+	//write Floor:
+	tft.setCursor(18, pxOffset);
+	tft.setTextSize(1);
+	tft.print(name);
+	tft.setCursor(100, pxOffset);
+	tft.print(valueCurrent);
 }
 
 void displayUpdate() {
@@ -155,6 +166,25 @@ void displayUpdate() {
 	}
 
 }
+
+
+void displayCurrentUpdate() {
+	if (inErrorState) { // don't show windows in error state
+		return;
+	}
+	tft.fillScreen(ST7735_BLACK);
+	tft.setCursor(1, 1);
+	tft.setTextSize(2);
+	tft.setTextColor(ST7735_RED);
+	tft.print("Strom");
+	tft.setTextColor(ST7735_WHITE);
+	tft.drawRect(2, 20, 125, 90, ST7735_GREEN);
+	printCurrent("Netzteil 1", 12.45f, 30);
+	printCurrent("Netzteil 2", 1.23f, 60);
+	printCurrent("Netzteil 3", 2.14f, 90);
+
+}
+
 
 void statusLedOn() {
 	analogWrite(LED, 96);

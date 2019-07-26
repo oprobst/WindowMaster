@@ -35,4 +35,8 @@ void sendSingleWindowEvent(short no, short newType, short oldType) {
 	}
 
 }
+	void sendCurrentUpdate (short no, int value){
+		knx.groupWrite2ByteInt(currentGA[no], value);
+				delay(50);
+	}
 

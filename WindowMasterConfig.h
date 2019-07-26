@@ -43,6 +43,11 @@
 #define DG_Fenster_Sabo_Bad_Wand			"9/0/17"
 #define DG_Fenster_Sabo_Kind_2 				"9/0/18"
 
+#define Current_Netzteil_1                  "11/5/7"
+#define Current_Netzteil_2                  "11/5/8"
+#define Current_Netzteil_3                  "11/5/9"
+
+
 #define WINDOW_OPEN  0
 #define WINDOW_CLOSE 1
 #define WINDOW_ERROR 2
@@ -74,6 +79,7 @@ extern const short functionPin[ARRAYSIZE];
 extern const short statePin[ARRAYSIZE];
 extern const char * windowName[ARRAYSIZE];
 
+extern const char* currentGA[3];
 extern short windowState[ARRAYSIZE];
 
 extern long eventsSinceReset;
