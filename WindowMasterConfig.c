@@ -46,6 +46,12 @@ const short windowCount = ARRAYSIZE;
 const short isOnfloor[] = { 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2,
 		2, 2 };
 
+const char* currentGA[3] = {
+  Current_Netzteil_1,
+  Current_Netzteil_2,
+  Current_Netzteil_3
+};
+
 //Arduino MEGA ports for comm: SPI >=50; Serial 0-1, 18-19; --> Do not use 18/19, 20/21 for window check.
 const short statePin[] = { 4, 6, 14, 16, 22, 24, 26, 28, 30, 32, 34, 36, 38,
 		40, 42, 44, 46, 48, 54 }; //, 56, 58, 60, 62, 64, 66
@@ -56,6 +62,8 @@ const char * windowName[] = { "Sauna", "Technikraum", "Terrassentuer",
 		"WZ Balkon", "Gaeste Garten", "Gaeste Nord", "Gaeste WC", "Nicos Zimmer",
 		"Umkleide", "Schlafzimmer", "Flur Gaube", "Bad Gaube", "Bad Nord",
 		"Bastis Zimmer" };
+
+
 
 short windowState[] = { WINDOW_UNDEF, WINDOW_UNDEF, WINDOW_UNDEF, WINDOW_UNDEF,
 WINDOW_UNDEF,

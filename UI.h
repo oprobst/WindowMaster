@@ -8,10 +8,11 @@ void displayInit();
 void displayError (char* reason);
 void displayCancelError();
 void displayUpdate();
-
+void displayCurrentUpdate ();
 void statusLedOn();
 void errorLedOn();
 
 void displayWindowState ();
+
 
 #endif /* UI_H_ */
