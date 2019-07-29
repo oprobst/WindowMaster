@@ -21,24 +21,24 @@ long voltageCheck() {
   return  3.26 / sample(A3, 2) * 1023 *1000;
 }
 
-int toMilliAmpere(short analogInput) {
-	const short mVperAmp = 133; //mV
+long toMilliAmpere(int sensor) {
+  const short mVperAmp = 133; //mV
   const int offset = 465; //mV
-	long sensor = sample(analogInput, 5);
+	//long sensor = sample(analogInput, 5);
   sensor = sensor * uRef / 1023;
   sensor = sensor - offset;
   //sensor = sensor * 1000 / mVperAmp;
-	//return sensor / mVperAmp * 1000;
-  return sensor;
+  return sensor / mVperAmp * 1000;
+  //return sensor;
 }
 
 int checkCurrent(short no) {
 	if (no == 0) {
-		return toMilliAmpere(A5);
+		return toMilliAmpere(lastReadCurrent[0]);
 	} else if (no == 1) {
-		return toMilliAmpere(A3);
+		return toMilliAmpere(lastReadCurrent[1]);
 	} else if (no == 2) {
-		return toMilliAmpere(A4);
+		return toMilliAmpere(lastReadCurrent[2]);
 	} else {
 		return 0;
 	}

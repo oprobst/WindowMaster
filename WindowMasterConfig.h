@@ -79,6 +79,7 @@ extern const short functionPin[ARRAYSIZE];
 extern const short statePin[ARRAYSIZE];
 extern const char * windowName[ARRAYSIZE];
 
+extern long lastReadCurrent[3];
 extern const char* currentGA[3];
 extern long current[3];
 extern long uRef;

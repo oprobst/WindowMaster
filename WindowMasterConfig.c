@@ -51,6 +51,7 @@ const char* currentGA[3] = {
   Current_Netzteil_2,
   Current_Netzteil_3
 };
+long lastReadCurrent[3] = { 0, 0, 0 };
 long current[3] = { 0, 0, 0 };
 long uRef = 0;
 
