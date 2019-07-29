@@ -9,6 +9,8 @@
 #define WINDOW 1
 #define CURRENT 2
 
+short show = OFF;
+  
 void initTimer() {
 	noInterrupts();
 	TCCR1A = 0;
@@ -43,7 +45,6 @@ void setup() {
 
 void loop() {
 
-	short show = OFF;
 	if (checkAllContacts() && show == WINDOW) {
 		displayUpdate();
 	}
@@ -56,10 +57,12 @@ void loop() {
 		if (show == OFF) {
 			show = WINDOW;
 			digitalWrite(LED_DISPLAY, true);
+      displayUpdate();
 			delay (500);
 		} else if (show == WINDOW){
 			show = CURRENT;
 			digitalWrite(LED_DISPLAY, true);
+      displayCurrentUpdate();
 			delay (500);
 		} else {
 			show = OFF;

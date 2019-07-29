@@ -80,6 +80,9 @@ extern const short statePin[ARRAYSIZE];
 extern const char * windowName[ARRAYSIZE];
 
 extern const char* currentGA[3];
+extern long current[3];
+extern long uRef;
+
 extern short windowState[ARRAYSIZE];
 
 extern long eventsSinceReset;

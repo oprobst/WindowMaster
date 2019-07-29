@@ -4,6 +4,7 @@
 #include "WindowMasterConfig.h"
 
 short inErrorState = FALSE;
+short isOnlyCurrentUpdate = FALSE;
 
 Adafruit_ST7735 tft = Adafruit_ST7735(TFT_PIN_CS, TFT_PIN_DC, TFT_PIN_RST); // Display-Bibliothek Setup
 //////////////////////////////////Setup
@@ -102,21 +103,24 @@ void printFloor(char * name, short open, short closed, short malfunction,
 	tft.setCursor(110, pxOffset);
 	tft.print(malfunction);
 }
-void printCurrent(char * name, float valueCurrent, short pxOffset) {
+void printCurrent(char * name, int valueCurrent, short pxOffset) {
 	tft.setTextSize(1);
 
-	//write Floor:
 	tft.setCursor(18, pxOffset);
 	tft.setTextSize(1);
 	tft.print(name);
-	tft.setCursor(100, pxOffset);
-	tft.print(valueCurrent);
+	tft.fillRect (86-1, pxOffset-1, 30, 10, ST7735_BLUE); 
+  tft.setCursor(86, pxOffset);
+  tft.print(valueCurrent);
 }
 
 void displayUpdate() {
 	if (inErrorState) { // don't show windows in error state
 		return;
 	}
+  if(isOnlyCurrentUpdate){
+    isOnlyCurrentUpdate = FALSE;
+  }
 	tft.fillScreen(ST7735_BLACK);
 	tft.setCursor(1, 1);
 	tft.setTextSize(2);
@@ -172,17 +176,22 @@ void displayCurrentUpdate() {
 	if (inErrorState) { // don't show windows in error state
 		return;
 	}
-	tft.fillScreen(ST7735_BLACK);
-	tft.setCursor(1, 1);
-	tft.setTextSize(2);
-	tft.setTextColor(ST7735_RED);
-	tft.print("Strom");
-	tft.setTextColor(ST7735_WHITE);
-	tft.drawRect(2, 20, 125, 90, ST7735_GREEN);
-	printCurrent("Netzteil 1", 12.45f, 30);
-	printCurrent("Netzteil 2", 1.23f, 60);
-	printCurrent("Netzteil 3", 2.14f, 90);
-
+  if(!isOnlyCurrentUpdate){
+    tft.fillScreen(ST7735_BLACK);
+	  tft.setCursor(1, 1);
+	  tft.setTextSize(2);
+	  tft.setTextColor(ST7735_RED);
+	  tft.print("Strom");
+	  tft.setTextColor(ST7735_WHITE);
+	  tft.drawRect(2, 20, 125, 90, ST7735_GREEN);
+    isOnlyCurrentUpdate = TRUE;
+  }
+	printCurrent("Netzteil 1", current[0], 30);
+	printCurrent("Netzteil 2", current[1], 60);
+	printCurrent("Netzteil 3", current[2], 90);
+  printCurrent("Ref. Volt" , uRef, 120);
+  
+  
 }
 
 
@@ -199,4 +208,3 @@ void errorLedOn() {
 	}
 	brightness += 8;
 }
-

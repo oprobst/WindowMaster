@@ -51,6 +51,8 @@ const char* currentGA[3] = {
   Current_Netzteil_2,
   Current_Netzteil_3
 };
+long current[3] = { 0, 0, 0 };
+long uRef = 0;
 
 //Arduino MEGA ports for comm: SPI >=50; Serial 0-1, 18-19; --> Do not use 18/19, 20/21 for window check.
 const short statePin[] = { 4, 6, 14, 16, 22, 24, 26, 28, 30, 32, 34, 36, 38,
