@@ -22,21 +22,13 @@ void initTimer() {
 	TIMSK1 |= (1 << TOIE1);
 	//Timer 2 for LED pin 9 (Ardunio Mega)
 	//Timer 3 for measure current // 100kHz
- #
- 
+	 SREG_I_bit = 1;
+	 TCCR3A = 0x80;
+	 TCCR3B = 0x0B;
+	 OCR3AH = 0x00;
+	 OCR3AL = 0xF9;
+	 OCIE3A_bit = 1;
 
-  TCCR3A = 0;
-  TCCR3B = 0;
-  TCNT3 = 0;
-
-  // 50 Hz (16000000/((1249+1)*256))
-  OCR3A = 1249;
-  // CTC
-  TCCR3B |= (1 << WGM32);
-  // Prescaler 256
-  TCCR3B |= (1 << CS32);
-  // Output Compare Match A Interrupt Enable
-  TIMSK3 |= (1 << OCIE3A);
 	interrupts();
 }
 
