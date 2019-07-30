@@ -17,13 +17,18 @@ long sample(short analogInput, short samples) {
 	return result / samples;
 }
 
+
 float voltageCheck() {
   return  3.26 / sample(A2, 3) * 1023.0 ;
 }
 
+void initCurrentCheck (){
+  uRef = voltageCheck();
+}
+
 float toAmpere(float sensor) {
-  const float VperAmp = 0.133; //mV
-  const float offset = 0.465; //mV
+  const float VperAmp = 0.127; //mV
+  const float offset = (uRef - 1.53)*0.1435 ; //mV
 	
   sensor = sensor * uRef / 1023.0;
   sensor = sensor - offset;
@@ -45,7 +50,6 @@ float checkCurrent(short no) {
 
 short checkAllCurrents() {
 	short result = FALSE;
-  uRef = voltageCheck();
 	for (short i = 0; i < 3; i++) {
 		current[i] = checkCurrent(i);
 		if (currentVisualized[i] * 1.01 < current[i]
@@ -53,9 +57,11 @@ short checkAllCurrents() {
 			result = TRUE;
 			currentVisualized[i] = current[i];      
 		}
+    float diff = currentSendKnx[i] - current[i];
 		if (currentSendKnx[i] * 1.05 < current[i]
-				|| currentSendKnx[i] * 0.95 > current[i]) {
-			//sendCurrentUpdate(i, current[i]);
+				|| currentSendKnx[i] * 0.95 > current[i] &&
+				(diff > 0.25 || diff < -0.25)) {
+			sendCurrentUpdate(i, current[i]);
 			currentSendKnx[i] = current[i];
 		}
 	}

@@ -7,6 +7,6 @@ void initKnx();
 
 void sendSingleWindowEvent(short no, short newType, short oldType);
 
-void sendCurrentUpdate (short no, int value);
+void sendCurrentUpdate (short no, float value);
 
 #endif /* KXN_H_ */

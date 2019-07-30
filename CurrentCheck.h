@@ -11,6 +11,8 @@
 //return mA
 int checkCurrent (short no);
 
+void initCurrentCheck ();
+
 short checkAllCurrents();
 
 #endif /* CURRENTCHECK_H_ */
