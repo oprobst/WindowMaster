@@ -21,9 +21,9 @@ void displayInit() {
 	tft.setCursor(10, 80);
 	tft.print("Master");
 	tft.setTextSize(1);
-	tft.setCursor(50, 145);
+	tft.setCursor(30, 145);
 	tft.setTextColor(ST7735_WHITE);
-	tft.print("by Oli '18");
+	tft.print("by Oli 2018/19");
 
 	pinMode(LED, OUTPUT);
 
@@ -103,13 +103,13 @@ void printFloor(char * name, short open, short closed, short malfunction,
 	tft.setCursor(110, pxOffset);
 	tft.print(malfunction);
 }
-void printCurrent(char * name, int valueCurrent, short pxOffset) {
+void printCurrent(char * name, float valueCurrent, short pxOffset) {
 	tft.setTextSize(1);
 
 	tft.setCursor(18, pxOffset);
 	tft.setTextSize(1);
 	tft.print(name);
-	tft.fillRect (86-1, pxOffset-1, 30, 10, ST7735_BLUE); 
+	tft.fillRect (86-1, pxOffset-1, 35, 10, ST7735_BLUE); 
   tft.setCursor(86, pxOffset);
   tft.print(valueCurrent);
 }

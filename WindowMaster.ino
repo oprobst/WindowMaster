@@ -22,31 +22,43 @@ void initTimer() {
 	TIMSK1 |= (1 << TOIE1);
 	//Timer 2 for LED pin 9 (Ardunio Mega)
 	//Timer 3 for measure current // 100kHz
+ #
+ 
 
-	TCCR3A = 0;
-	TCCR3B = 0;
-	TCNT3  = 0;
-	OCR3A = 159;
-	TCCR3B |= (1 << WGM21);
-	TCCR3B |= (0 << CS22) | (0 << CS21) | (1 << CS20);
-	// enable timer compare interrupt
-	TIMSK3 |= (1 << OCIE3A);
+  TCCR3A = 0;
+  TCCR3B = 0;
+  TCNT3 = 0;
+
+  // 50 Hz (16000000/((1249+1)*256))
+  OCR3A = 1249;
+  // CTC
+  TCCR3B |= (1 << WGM32);
+  // Prescaler 256
+  TCCR3B |= (1 << CS32);
+  // Output Compare Match A Interrupt Enable
+  TIMSK3 |= (1 << OCIE3A);
 	interrupts();
 }
 
-const long samplesPerSec = 100000;
-long currentSampleCount = 0;
-long currentRead [3] = {0,0,0};
+const long samplesPerSec = 50;
+unsigned long currentSampleCount = 0;
+float currentRead [3] = {0,0,0};
+
+float calcAvg (long no, float oldAvg, float newM){
+  return (float)oldAvg * ((float)(no - 1) / (float)no) + (float)newM / (float)no;
+}
 
 ISR(TIMER3_COMPA_vect){
    currentSampleCount ++;
-   currentRead [0] = (currentRead[0] * 1000 / currentSampleCount + analogRead (A5)* 1000/currentSampleCount)*currentSampleCount* 1000;
-   currentRead [1] = (currentRead[1] * 1000/ currentSampleCount + analogRead (A3)* 1000/currentSampleCount)*currentSampleCount* 1000;
-   currentRead [2] = (currentRead[2] * 1000/ currentSampleCount + analogRead (A4)* 1000/currentSampleCount)*currentSampleCount* 1000;
+  //TCNT3 = 0;
+   //OCR3A = 1249;
+   currentRead [0] = calcAvg (currentSampleCount, currentRead[0] , analogRead (A5));
+   currentRead [1] = calcAvg (currentSampleCount, currentRead[1] , analogRead (A3));
+   currentRead [2] = calcAvg (currentSampleCount, currentRead[2] , analogRead (A4));
    if (currentSampleCount >= samplesPerSec){
-	   lastReadCurrent [0] = currentRead[0]/1000;
-	   lastReadCurrent [1] = currentRead[1]/1000;
-	   lastReadCurrent [2] = currentRead[2]/1000;
+	   lastReadCurrent [0] = currentRead[0];
+	   lastReadCurrent [1] = currentRead[1];
+	   lastReadCurrent [2] = currentRead[2];
 	   currentSampleCount = 0;
 	   currentRead [0] = 0;
 	   currentRead [1] = 0;
@@ -73,7 +85,6 @@ void setup() {
 	delay(1000);
 	initWindowCheck();
 	initTimer();
-	displayUpdate();
 }
 
 

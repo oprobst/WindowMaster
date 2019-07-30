@@ -4,8 +4,8 @@
 #include "UI.h"
 #include "KNX.h"
 
-int currentSendKnx[] = { 0, 0, 0 };
-int currentVisualized[] = { 0, 0, 0 };
+float currentSendKnx[] = { 0, 0, 0 };
+float currentVisualized[] = { 0, 0, 0 };
 
 
 long sample(short analogInput, short samples) {
@@ -17,28 +17,27 @@ long sample(short analogInput, short samples) {
 	return result / samples;
 }
 
-long voltageCheck() {
-  return  3.26 / sample(A3, 2) * 1023 *1000;
+float voltageCheck() {
+  return  3.26 / sample(A2, 3) * 1023.0 ;
 }
 
-long toMilliAmpere(int sensor) {
-  const short mVperAmp = 133; //mV
-  const int offset = 465; //mV
-	//long sensor = sample(analogInput, 5);
-  sensor = sensor * uRef / 1023;
+float toAmpere(float sensor) {
+  const float VperAmp = 0.133; //mV
+  const float offset = 0.465; //mV
+	
+  sensor = sensor * uRef / 1023.0;
   sensor = sensor - offset;
-  //sensor = sensor * 1000 / mVperAmp;
-  return sensor / mVperAmp * 1000;
-  //return sensor;
+  sensor = sensor / VperAmp;
+  return sensor;
 }
 
-int checkCurrent(short no) {
+float checkCurrent(short no) {
 	if (no == 0) {
-		return toMilliAmpere(lastReadCurrent[0]);
+		return toAmpere(lastReadCurrent[0]);
 	} else if (no == 1) {
-		return toMilliAmpere(lastReadCurrent[1]);
+		return toAmpere(lastReadCurrent[1]);
 	} else if (no == 2) {
-		return toMilliAmpere(lastReadCurrent[2]);
+		return toAmpere(lastReadCurrent[2]);
 	} else {
 		return 0;
 	}
