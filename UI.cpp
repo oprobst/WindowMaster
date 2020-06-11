@@ -156,13 +156,13 @@ void displayUpdate() {
 
 		if (state == WINDOW_OPEN) {
 			paintOpenWindow(2, 150);
-			tft.print(contactGA[lastEvent]);
+			tft.print(functionGA[lastEvent]);
 		} else if (state == WINDOW_CLOSE) {
 			paintClosedWindow(2, 150);
-			tft.print(contactGA[lastEvent]);
+			tft.print(functionGA[lastEvent]);
 		} else {
 			paintContactFail(2, 150);
-			tft.print(functionGA[lastEvent]);
+			tft.print(contactGA[lastEvent]);
 		}
 		tft.setCursor(15, 150);
 		tft.setTextColor(ST7735_WHITE);

@@ -67,7 +67,7 @@
 
 #define ARRAYSIZE 19
 
-#define TIME_UNTIL_DISPLAY_OFF 120
+#define TIME_UNTIL_DISPLAY_OFF 300
 
 extern const char * contactGA[ARRAYSIZE];
 
