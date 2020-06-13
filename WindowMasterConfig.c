@@ -57,33 +57,31 @@ float uRef = 0;
 
 // Pinbelegung:
 /*
+ * 6 5   Technikraum
+4 3   Sauna
 14 15 Terrasse UG
 16 17 Werkstatt
 22 23 Kueche Terrasse
 24 25 Balkon Esszimmmer
 26 27 Esszimmer Terrasse
-28 29 Gäste Norden Richtung Garage
+69 29 Gäste Norden Richtung Garage ! 28 defekt. Mit 69 gebrueckt.
 30 31 Schlafzimmer Richtung Tal
 32 33 Bad OG neben Toilette
 34 35 Kuechenfenster
 36 37 Bad OG neben Waschbecken
 38 39 Bad Eg
 40 41 Nicos Zimmer
-44 45 Schlafzimmer Richtung Strasse
-46 47 Sauna...
-48 49 Gaeste Richtung Garten
-
 42 43 OG Flur Gaube
-      Bastis Zimmer
-6 7   Technikraum
-4 5   Sauna
-42 43 Garagenkeller
-56 57 
-offen: 4,     
+44 45 Schlafzimmer Richtung Strasse
+46 47 Garagenkeller
+48 49 Gaeste Richtung Garten
+54 55 Bastis Zimmer
+
+    
 */
 //Arduino MEGA ports for comm: SPI >=50; Serial 0-1, 18-19; --> Do not use 18/19, 20/21 for window check.
-const short statePin[] =    { 3, 5, 14, 16, 56, 34, 22, 26, 24, 48, 69, 38, 40, 44, 30, 42, 36, 32, 54 }; //, 56, 58, 60, 62, 64, 66  //PIN 28 defekt? Auf A15 (69) gelegt
-const short functionPin[] = { 4, 6, 15, 17, 57, 35, 23, 27, 25, 49, 29, 39, 41, 45, 31, 43, 37, 33, 55 }; //, 57, 59, 61, 63, 65, 67
+const short statePin[] =    { 3, 5, 14, 16, 46, 34, 22, 26, 24, 48, 69, 38, 40, 44, 30, 42, 36, 32, 54 }; //, 56, 58, 60, 62, 64, 66  //PIN 28 defekt? Auf A15 (69) gelegt
+const short functionPin[] = { 4, 6, 15, 17, 47, 35, 23, 27, 25, 49, 29, 39, 41, 45, 31, 43, 37, 33, 55 }; //, 57, 59, 61, 63, 65, 67
 //const short statePin[] =    { 4, 6, 14, 16, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48, 54 }; //, 56, 58, 60, 62, 64, 66
 //const short functionPin[] = { 3, 5, 15, 17, 23, 25, 27, 29, 31, 33, 35, 37, 39, 41, 43, 45, 47, 49, 55 }; //, 57, 59, 61, 63, 65, 67
 const char * windowName[] = { "Sauna", "Technikraum", "UG Terrassentuer",
