@@ -67,8 +67,8 @@ const short isOnfloor[] = { 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2,
 /*
  * 6 5   Technikraum
 4 3   Sauna
-7 8 Terrasse UG
-9 10 Werkstatt
+A14 A13 Terrasse UG
+A12 A11 Werkstatt
 22 23 Kueche Terrasse
 24 25 Balkon Esszimmmer
 26 27 Esszimmer Terrasse
@@ -88,8 +88,8 @@ const short isOnfloor[] = { 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2,
     
 */
 //Arduino MEGA ports for comm: SPI >=50; Serial 0-1, 18-19; --> Do not use 18/19, 20/21 for window check.
-const short statePin[] =    { 3, 5, 7, 9, 46, 34, 22, 26, 24, 48, 69, 38, 40, 44, 30, 42, 36, 32, 54 }; //, 56, 58, 60, 62, 64, 66  //PIN 28 defekt? Auf A15 (69) gelegt
-const short functionPin[] = { 4, 6, 8, 10, 47, 35, 23, 27, 25, 49, 29, 39, 41, 45, 31, 43, 37, 33, 55 }; //, 57, 59, 61, 63, 65, 67
+const short statePin[] =    { 3, 5, A14, A12, 46, 34, 22, 26, 24, 48, 69, 38, 40, 44, 30, 42, 36, 32, 54 }; //, 56, 58, 60, 62, 64, 66  //PIN 28 defekt? Auf A15 (69) gelegt
+const short functionPin[] = { 4, 6, A13, A11, 47, 35, 23, 27, 25, 49, 29, 39, 41, 45, 31, 43, 37, 33, 55 }; //, 57, 59, 61, 63, 65, 67
 
 const char * windowName[] = { "Sauna", "Technikraum", "UG Terrassentuer",
 		"Werkstatt", "Garagenkeller", "Kuechenfenster", "Kueche Tuer", "Ess.Terrasse",
