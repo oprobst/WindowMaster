@@ -37,5 +37,11 @@ void sendSingleWindowEvent(short no, short newType, short oldType) {
 }
 	void sendCurrentUpdate (short no, float value){
 		  knx.groupWrite2ByteFloat(currentGA[no], value * 1000.0);
-		  delay(100);
+		  delay(50);
 	}
+
+	void sendCisternUpdate (int value){
+		  knx.groupWrite2ByteInt(CISTERN_GA, value);
+		  delay(50);
+	}
+

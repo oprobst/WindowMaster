@@ -35,7 +35,7 @@ void displayCancelError() {
 	tft.fillScreen(ST7735_BLACK);
 }
 
-void displayError(char * reason) {
+void displayError(char *reason) {
 	inErrorState = TRUE;
 	tft.fillScreen(ST7735_BLACK);
 	tft.setTextSize(2);
@@ -82,8 +82,7 @@ void paintContactFail(short x, short y) {
 	tft.drawLine(x + 4, y + 2, x + 4, y + 5, ST7735_CYAN);
 }
 
-
-void printFloor(char * name, short open, short closed, short malfunction,
+void printFloor(char *name, short open, short closed, short malfunction,
 		short pxOffset) {
 	tft.setTextSize(1);
 	//draw icons:
@@ -103,24 +102,24 @@ void printFloor(char * name, short open, short closed, short malfunction,
 	tft.setCursor(110, pxOffset);
 	tft.print(malfunction);
 }
-void printCurrent(char * name, float valueCurrent, short pxOffset) {
+void printCurrent(char *name, float valueCurrent, short pxOffset) {
 	tft.setTextSize(1);
 
 	tft.setCursor(18, pxOffset);
 	tft.setTextSize(1);
 	tft.print(name);
-	tft.fillRect (86-1, pxOffset-1, 35, 10, ST7735_BLUE); 
-  tft.setCursor(86, pxOffset);
-  tft.print(valueCurrent);
+	tft.fillRect(86 - 1, pxOffset - 1, 35, 10, ST7735_BLUE);
+	tft.setCursor(86, pxOffset);
+	tft.print(valueCurrent);
 }
 
 void displayUpdate() {
 	if (inErrorState) { // don't show windows in error state
 		return;
 	}
-  if(isOnlyCurrentUpdate){
-    isOnlyCurrentUpdate = FALSE;
-  }
+	if (isOnlyCurrentUpdate) {
+		isOnlyCurrentUpdate = FALSE;
+	}
 	tft.fillScreen(ST7735_BLACK);
 	tft.setCursor(1, 1);
 	tft.setTextSize(2);
@@ -151,7 +150,6 @@ void displayUpdate() {
 		tft.print("Letztes Event: ");
 		short state = windowState[lastEvent];
 
-
 		tft.setTextColor(ST7735_YELLOW);
 
 		if (state == WINDOW_OPEN) {
@@ -171,29 +169,45 @@ void displayUpdate() {
 
 }
 
-
 void displayCurrentUpdate() {
 	if (inErrorState) { // don't show windows in error state
 		return;
 	}
-  if(!isOnlyCurrentUpdate){
-    tft.fillScreen(ST7735_BLACK);
-	  tft.setCursor(1, 1);
-	  tft.setTextSize(2);
-	  tft.setTextColor(ST7735_RED);
-	  tft.print("Strom");
-	  tft.setTextColor(ST7735_WHITE);
-	  tft.drawRect(2, 20, 125, 90, ST7735_GREEN);
-    isOnlyCurrentUpdate = TRUE;
-  }
+	if (!isOnlyCurrentUpdate) {
+		tft.fillScreen(ST7735_BLACK);
+		tft.setCursor(1, 1);
+		tft.setTextSize(2);
+		tft.setTextColor(ST7735_RED);
+		tft.print("Strom");
+		tft.setTextColor(ST7735_WHITE);
+		tft.drawRect(2, 20, 125, 90, ST7735_GREEN);
+		isOnlyCurrentUpdate = TRUE;
+	}
 	printCurrent("Netzteil 1", current[0], 30);
 	printCurrent("Netzteil 2", current[1], 60);
 	printCurrent("Netzteil 3", current[2], 90);
-  printCurrent("Ref. Volt" , uRef, 120);
-  
-  
+	printCurrent("Ref. Volt", uRef, 120);
+
 }
 
+void displayCisternUpdate() {
+	if (inErrorState) { // don't show windows in error state
+		return;
+	}
+	tft.fillScreen(ST7735_BLACK);
+	tft.setCursor(1, 1);
+	tft.setTextSize(2);
+	tft.setTextColor(ST7735_RED);
+	tft.print("Zisterne ");
+	tft.setTextColor(ST7735_WHITE);
+    tft.setCursor(2, 40);
+	tft.print(cisternValue);
+	tft.setCursor(2, 115);
+	tft.print("Events seit Reset:");
+	tft.setCursor(2, 125);
+	tft.print(eventsSinceReset);
+
+}
 
 void statusLedOn() {
 	analogWrite(LED, 96);

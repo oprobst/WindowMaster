@@ -9,6 +9,7 @@ void displayError (char* reason);
 void displayCancelError();
 void displayUpdate();
 void displayCurrentUpdate ();
+void displayCisternUpdate();
 void statusLedOn();
 void errorLedOn();
 

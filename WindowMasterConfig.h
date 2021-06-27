@@ -47,6 +47,8 @@
 #define Current_Netzteil_2                  "11/5/8"
 #define Current_Netzteil_3                  "11/5/9"
 
+#define CISTERN_GA                          "11/0/24"
+#define CISTERN_SEND_INTERVALL              "60000" //ms
 
 #define WINDOW_OPEN  0
 #define WINDOW_CLOSE 1
@@ -69,6 +71,22 @@
 
 #define TIME_UNTIL_DISPLAY_OFF 300
 
+
+#define ONE_WIRE_BUS 2 // Pin serving das data port for the sensors.
+
+#define BYTE_SIZE_ADDRESS 8 // don't change, given by Dallas Instruments. Size of the sensor address.
+
+#define  BYTE_SIZE_NAME 16 // size of the name for a sensor.
+
+/*
+ *  data struct for one sensor, name of maximum BYTE_SIZE_NAME and the unique address (given by producer)
+ */
+struct ds18b20_sensor {
+  char name [BYTE_SIZE_NAME];
+  short address [BYTE_SIZE_ADDRESS];
+  char temperatureGA [12];
+};
+
 extern const char * contactGA[ARRAYSIZE];
 
 extern const char * functionGA[ARRAYSIZE];
@@ -86,10 +104,27 @@ extern float uRef;
 
 extern short windowState[ARRAYSIZE];
 
+//amount of window events since the last reset.
 extern long eventsSinceReset;
 
+// Array index of last event.
 extern short lastEvent;
 
+//delay until the display is turned off
 extern int timeUntilDisplayOff;
+
+//struct defining the temperature sensors and their values
+extern struct ds18b20_sensor ds18b20_sensors [];
+
+//Sum of all temperature sensors
+extern short amountKnownSensors;
+
+
+//measured value from cistern sensor (cm below sensor)
+extern int cisternValue;
+
+//amount of cistern events since the last reset.
+extern long cisternEventsSinceReset;
+
 
 #endif /* WINDOWMASTERCONFIG_H_ */
