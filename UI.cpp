@@ -23,7 +23,7 @@ void displayInit() {
 	tft.setTextSize(1);
 	tft.setCursor(30, 145);
 	tft.setTextColor(ST7735_WHITE);
-	tft.print("by Oli 2018/19");
+	tft.print("by Oli 2018-21");
 
 	pinMode(LED, OUTPUT);
 
@@ -203,9 +203,11 @@ void displayCisternUpdate() {
     tft.setCursor(2, 40);
 	tft.print(cisternValue);
 	tft.setCursor(2, 115);
+	
+	tft.setTextSize(1);
 	tft.print("Events seit Reset:");
 	tft.setCursor(2, 125);
-	tft.print(eventsSinceReset);
+	tft.print(cisternEventsSinceReset);
 
 }
 

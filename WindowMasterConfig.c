@@ -67,8 +67,8 @@ const short isOnfloor[] = { 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2,
 /*
  * 6 5   Technikraum
 4 3   Sauna
-A14 A13 Terrasse UG
-A12 A11 Werkstatt
+68 (A14) 67(A13) Terrasse UG
+66 (A12) 65(A11) Werkstatt
 22 23 Kueche Terrasse
 24 25 Balkon Esszimmmer
 26 27 Esszimmer Terrasse
@@ -88,8 +88,8 @@ A12 A11 Werkstatt
     
 */
 //Arduino MEGA ports for comm: SPI >=50; Serial 0-1, 18-19; --> Do not use 18/19, 20/21 for window check.
-const short statePin[] =    { 3, 5, A14, A12, 46, 34, 22, 26, 24, 48, 69, 38, 40, 44, 30, 42, 36, 32, 54 }; //, 56, 58, 60, 62, 64, 66  //PIN 28 defekt? Auf A15 (69) gelegt
-const short functionPin[] = { 4, 6, A13, A11, 47, 35, 23, 27, 25, 49, 29, 39, 41, 45, 31, 43, 37, 33, 55 }; //, 57, 59, 61, 63, 65, 67
+const short statePin[] =    { 3, 5, 68, 66, 46, 34, 22, 26, 24, 48, 69, 38, 40, 44, 30, 42, 36, 32, 54 }; //, 56, 58, 60, 62, 64, 66  //PIN 28 defekt? Auf A15 (69) gelegt
+const short functionPin[] = { 4, 6, 67, 65, 47, 35, 23, 27, 25, 49, 29, 39, 41, 45, 31, 43, 37, 33, 55 }; //, 57, 59, 61, 63, 65, 67
 
 const char * windowName[] = { "Sauna", "Technikraum", "UG Terrassentuer",
 		"Werkstatt", "Garagenkeller", "Kuechenfenster", "Kueche Tuer", "Ess.Terrasse",
@@ -166,7 +166,3 @@ struct ds18b20_sensor ds18b20_sensors [] = {
   {"ugHk6Vorl",	    {0x28, 0xFF, 0x77, 0xA9, 0x53, 0x17, 0x04, 0x32}, ""},
   {"ugHk6Rueckl",  	{0x28, 0xFF, 0x3D, 0x24, 0x60, 0x17, 0x04, 0x18}, ""}
 };
-
-
-
-

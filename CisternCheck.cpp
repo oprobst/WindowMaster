@@ -7,7 +7,7 @@
 long lastSend = 0;
 
 void updateCistern(int value) {
-	cisternEventsSinceReset + 1;
+	cisternEventsSinceReset += 1;
 	if (cisternEventsSinceReset > 2147483640)
 		cisternEventsSinceReset = 0;
 	cisternValue = value;
@@ -19,7 +19,7 @@ void updateCistern(int value) {
 
 void initCisternCheck() {
 	Serial2.begin(300);
-	while (!Serial) {
+	while (!Serial2) {
 		;
 	}
 }
