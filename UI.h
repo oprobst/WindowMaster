@@ -10,6 +10,8 @@ void displayCancelError();
 void displayUpdate();
 void displayCurrentUpdate ();
 void displayCisternUpdate();
+void displayTempSensors(short page);
+void displayUnknownTempSensors();
 void statusLedOn();
 void errorLedOn();
 

@@ -45,3 +45,8 @@ void sendSingleWindowEvent(short no, short newType, short oldType) {
 		  delay(50);
 	}
 
+
+	void sendTemperatureUpdate (char * addr, float value){
+		  knx.groupWrite2ByteFloat(addr, value);
+		  delay(50);
+	}

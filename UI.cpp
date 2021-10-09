@@ -6,6 +6,45 @@
 short inErrorState = FALSE;
 short isOnlyCurrentUpdate = FALSE;
 
+
+/*
+
+ * Iterate through the ds18b20_sensors array and compare hard coded sensor addresses with the one read from the sensor.
+ * Return an const char * with the name stored in the array.
+
+const char* getNameForSensorAddress(byte *addr) {
+	for (uint8_t j = 0; j < amountKnownSensors; j++) {
+		if (array_cmp(addr, ds18b20_sensors[j].address, BYTE_SIZE_ADDRESS)
+				== true) {
+			return ds18b20_sensors[j].name;
+		}
+	}
+	return "unknown";
+}
+*/
+
+/*
+ * Read the byte address and translate it into a human readable string containing
+ * hex values.
+ * buf: buffer to write the created string into. Must be of size 24!
+ * addr: The address to parse.
+ */
+
+void getStringForSensorAddress(char *buf, short *addr) {
+	short *pin = addr;
+	const char *hex = "0123456789ABCDEF";
+	char *pout = buf;
+	for (; pin < addr + BYTE_SIZE_ADDRESS; pout += 3, pin++) {
+		pout[0] = hex[(*pin >> 4) & 0xF];
+		pout[1] = hex[*pin & 0xF];
+		pout[2] = ':';
+	}
+	pout[-1] = 0;
+}
+
+
+
+
 Adafruit_ST7735 tft = Adafruit_ST7735(TFT_PIN_CS, TFT_PIN_DC, TFT_PIN_RST); // Display-Bibliothek Setup
 //////////////////////////////////Setup
 void displayInit() {
@@ -210,6 +249,64 @@ void displayCisternUpdate() {
 	tft.print(cisternEventsSinceReset);
 
 }
+
+
+void displayTempSensors(short page) {
+	if (inErrorState) { // don't show windows in error state
+		return;
+	}
+
+	tft.fillScreen(ST7735_BLACK);
+	tft.setCursor(1, 1);
+	tft.setTextSize(2);
+	tft.setTextColor(ST7735_RED);
+	tft.print("Temperaturen "+ page);
+	tft.setTextColor(ST7735_WHITE);
+
+	short i = page * 16;
+	int posY = 16;
+	while (i < (page + 1) *16){ // for the next 16 entries
+
+
+		tft.setCursor(posY, 1);
+		char  name [24];
+		getStringForSensorAddress(name, ds18b20_sensors[i].address);
+		tft.print(name);
+		tft.setCursor(posY, 30);
+		tft.print(ds18b20_sensors[i].name);
+		tft.setCursor(posY + 8, 1);
+		tft.print(ds18b20_sensors[i].temperatureGA);
+		tft.setCursor(posY + 8, 30);
+		tft.print(ds18b20_sensors[i].lastTemperatur);
+		posY += 16;
+		i++;
+	}
+
+}
+
+
+void displayUnknownTempSensors() {
+	if (inErrorState) { // don't show windows in error state
+		return;
+	}
+	int posY = 16;
+	tft.fillScreen(ST7735_BLACK);
+		tft.setCursor(1, 1);
+		tft.setTextSize(2);
+		tft.setTextColor(ST7735_RED);
+		tft.print("Neue Thermometer");
+		tft.setTextColor(ST7735_WHITE);
+       for (int i = 0; i < 16; i++){
+    	   tft.setCursor(posY, 1);
+    	   char  name [24];
+    	   getStringForSensorAddress(name, unknown_ds18b20_sensors[i]);
+    	   tft.print(name);
+		   posY += 16;
+       }
+
+
+}
+
 
 void statusLedOn() {
 	analogWrite(LED, 96);

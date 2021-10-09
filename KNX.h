@@ -11,4 +11,6 @@ void sendCurrentUpdate (short no, float value);
 
 void sendCisternUpdate (int value);
 
+void sendTemperatureUpdate (char * addr, float value);
+
 #endif /* KXN_H_ */

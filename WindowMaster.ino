@@ -10,6 +10,10 @@
 #define WINDOW 1
 #define CURRENT 2
 #define CISTERN 3
+#define TEMP1 4
+#define TEMP2 5
+#define TEMP3 6
+#define UNKNOWNTEMP 7
 
 short show = OFF;
 
@@ -107,6 +111,8 @@ void loop() {
 		}
 	}
 
+	requestTemperatures();
+
 	if (checkAllContacts() && show == WINDOW) {
 		displayUpdate();
 	}
@@ -130,6 +136,26 @@ void loop() {
 			show = CISTERN;
 			digitalWrite(LED_DISPLAY, true);
 			displayCisternUpdate();
+			delay(300);
+		} else if (show == CISTERN) {
+			show = TEMP1;
+			digitalWrite(LED_DISPLAY, true);
+			displayTempSensors(0);
+			delay(300);
+		} else if (show == TEMP1) {
+			show = TEMP2;
+			digitalWrite(LED_DISPLAY, true);
+			displayTempSensors(1);
+			delay(300);
+		} else if (show == TEMP2) {
+			show = TEMP3;
+			digitalWrite(LED_DISPLAY, true);
+			displayTempSensors(2);
+			delay(300);
+		} else if (show == TEMP3) {
+			show = UNKNOWNTEMP;
+			digitalWrite(LED_DISPLAY, true);
+			displayUnknownTempSensors();
 			delay(300);
 		} else {
 			show = OFF;

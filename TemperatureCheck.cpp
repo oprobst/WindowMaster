@@ -2,7 +2,7 @@
 #include <Arduino.h>
 #include "WindowMasterConfig.h"
 //#include "UI.h"
-//#include "KNX.h"
+#include "KNX.h"
 #include <OneWire.h>
 #include <DallasTemperature.h>
 
@@ -11,10 +11,10 @@ OneWire oneWire(ONE_WIRE_BUS);
 // Pass oneWire reference to Dallas Temperature.
 DallasTemperature dallasSensors(&oneWire);
 
-
 //Number of ds18b20_sensors to be determined
-short amountKnownSensors =  36; //sizeof(ds18b20_sensors) / sizeof(ds18b20_sensor);
+short amountKnownSensors = 36; //sizeof(ds18b20_sensors) / sizeof(ds18b20_sensor);
 
+unsigned long lastMeasurement = 0;
 
 /*
  * Read the byte address and translate it into a human readable string containing
@@ -22,64 +22,74 @@ short amountKnownSensors =  36; //sizeof(ds18b20_sensors) / sizeof(ds18b20_senso
  * buf: buffer to write the created string into. Must be of size 24!
  * addr: The address to parse.
  */
-void getStringForSensorAddress (char * buf , byte * addr) {
-    unsigned char * pin = addr;
-    const char * hex = "0123456789ABCDEF";
-    char * pout = buf;
-    for(; pin < addr+BYTE_SIZE_ADDRESS; pout+=3, pin++){
-        pout[0] = hex[(*pin>>4) & 0xF];
-        pout[1] = hex[ *pin     & 0xF];
-        pout[2] = ':';
-    }
-    pout[-1] = 0;
+void getStringForSensorAddress(char *buf, byte *addr) {
+	unsigned char *pin = addr;
+	const char *hex = "0123456789ABCDEF";
+	char *pout = buf;
+	for (; pin < addr + BYTE_SIZE_ADDRESS; pout += 3, pin++) {
+		pout[0] = hex[(*pin >> 4) & 0xF];
+		pout[1] = hex[*pin & 0xF];
+		pout[2] = ':';
+	}
+	pout[-1] = 0;
 }
+
 
 /* Helper function:
  *  Compare content of two arrays with the length 'len'
  */
 boolean array_cmp(byte *a, short *b, int len) {
-  for (uint8_t i = 0; i < len; i++) {
-    if (a[i] != b[i]) return false;
-  }
-  return true;
+	for (uint8_t i = 0; i < len; i++) {
+		if (a[i] != b[i])
+			return false;
+	}
+	return true;
 }
 
 /*
  * Iterate through the ds18b20_sensors array and compare hard coded sensor addresses with the one read from the sensor.
  * Return an const char * with the name stored in the array.
  */
-const char * getNameForSensorAddress( byte * addr) {
-  for (uint8_t j = 0; j < amountKnownSensors; j++) {
-    if (array_cmp(addr, ds18b20_sensors[j].address, BYTE_SIZE_ADDRESS) == true) {
-      return ds18b20_sensors[j].name;
-    }
-  }
-  return "unknown";
+const short getIndexForSensorAddress(byte *addr) {
+	for (uint8_t j = 0; j < amountKnownSensors; j++) {
+		if (array_cmp(addr, ds18b20_sensors[j].address, BYTE_SIZE_ADDRESS)
+				== true) {
+			return j;
+		}
+	}
+	return 255;
 }
-
 
 void initTemperatureCheck() {
 	dallasSensors.begin();
 }
 
-void requestTemperatures(){
-	 byte addr [BYTE_SIZE_ADDRESS];
+void requestTemperatures() {
 
-	 dallasSensors.requestTemperatures(); // Send the command to get temperature readings
+	short indexUnknownSensors = 0;
+	if (millis() > lastMeasurement + TEMPERATURE_MEASURE_INTERVALL) {
+		lastMeasurement = millis();
 
-	  for (uint8_t i = 0; i < dallasSensors.getDS18Count(); i++) {
-	 //  Serial.print(i);
-	 //  Serial.print(". Temperature is: ");
-	 //   Serial.print(dallasSensors.getTempCByIndex(i));
-	 //   Serial.print(" from address ");
-	    dallasSensors.getAddress(addr, i);
-	    char addressStringBuff [24];
-	    getStringForSensorAddress(addressStringBuff, addr );
-	 //   Serial.print(addressStringBuff);
-	//    Serial.print(" at position ");
-	//    Serial.print(getNameForSensorAddress( addr ));
+		byte addr[BYTE_SIZE_ADDRESS];
 
-	 //   Serial.println(".");
-	  }
+		dallasSensors.requestTemperatures(); // Send the command to get temperature readings
 
+		for (uint8_t i = 0; i < dallasSensors.getDS18Count(); i++) {
+
+			float temp = dallasSensors.getTempCByIndex(i);
+			dallasSensors.getAddress(addr, i);
+			short index = getIndexForSensorAddress(addr);
+
+			if (index < 255){
+			ds18b20_sensors[index].lastTemperatur = temp;
+			delay (100);
+			sendTemperatureUpdate(ds18b20_sensors[index].temperatureGA, temp);
+			} else { // sensor not in sensors list
+				for (short i = 0; i++; i < 8){
+					unknown_ds18b20_sensors[indexUnknownSensors++][i] = addr[i];
+				}
+			}
+
+		}
+	}
 }

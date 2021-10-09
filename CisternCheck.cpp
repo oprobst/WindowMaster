@@ -11,7 +11,7 @@ void updateCistern(int value) {
 	if (cisternEventsSinceReset > 2147483640)
 		cisternEventsSinceReset = 0;
 	cisternValue = value;
-	if (millis() + CISTERN_SEND_INTERVALL > lastSend) {
+	if (millis() > lastSend + CISTERN_SEND_INTERVALL) {
 		sendCisternUpdate(value);
 		lastSend = millis();
 	}
