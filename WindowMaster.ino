@@ -15,7 +15,7 @@
 #define TEMP3 6
 #define UNKNOWNTEMP 7
 
-short show = OFF;
+short show = 4;
 
 void initTimer() {
 	noInterrupts();
@@ -69,7 +69,6 @@ ISR(TIMER3_COMPA_vect) {
 		currentRead[0] = 0;
 		currentRead[1] = 0;
 		currentRead[2] = 0;
-
 	}
 }
 
@@ -119,6 +118,10 @@ void loop() {
 	if (checkAllCurrents() && show == CURRENT) {
 		displayCurrentUpdate();
 	}
+
+  if ( show == UNKNOWNTEMP) {
+    displayUnknownTempSensors();
+  }
 
 	delay(50);
 	if (!digitalRead(USER_SWITCH)) {

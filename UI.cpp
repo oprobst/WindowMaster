@@ -34,10 +34,10 @@ void getStringForSensorAddress(char *buf, short *addr) {
 	short *pin = addr;
 	const char *hex = "0123456789ABCDEF";
 	char *pout = buf;
-	for (; pin < addr + BYTE_SIZE_ADDRESS; pout += 3, pin++) {
+	for (; pin < addr + BYTE_SIZE_ADDRESS; pout += 2, pin++) {
 		pout[0] = hex[(*pin >> 4) & 0xF];
 		pout[1] = hex[*pin & 0xF];
-		pout[2] = ':';
+		//pout[2] = ':';
 	}
 	pout[-1] = 0;
 }
@@ -260,25 +260,30 @@ void displayTempSensors(short page) {
 	tft.setCursor(1, 1);
 	tft.setTextSize(2);
 	tft.setTextColor(ST7735_RED);
-	tft.print("Temperaturen "+ page);
+	tft.print("Temp. ");
+  tft.print(page);
 	tft.setTextColor(ST7735_WHITE);
+  tft.setTextSize(0);
+	short i = page * 8;
+	int posY = 18;
+	while (i < (page + 1) *8){ // for the next 8 entries
 
-	short i = page * 16;
-	int posY = 16;
-	while (i < (page + 1) *16){ // for the next 16 entries
 
-
-		tft.setCursor(posY, 1);
+		tft.setCursor(1, posY);
 		char  name [24];
 		getStringForSensorAddress(name, ds18b20_sensors[i].address);
 		tft.print(name);
-		tft.setCursor(posY, 30);
+		tft.setCursor(50, posY +8 );
 		tft.print(ds18b20_sensors[i].name);
-		tft.setCursor(posY + 8, 1);
+		tft.setCursor(1, posY + 8);
 		tft.print(ds18b20_sensors[i].temperatureGA);
-		tft.setCursor(posY + 8, 30);
-		tft.print(ds18b20_sensors[i].lastTemperatur);
-		posY += 16;
+		tft.setCursor(95, posY );
+    if (ds18b20_sensors[i].lastTemperatur > -50){
+		  tft.print(ds18b20_sensors[i].lastTemperatur);
+    } else {
+      tft.print("N/A");
+    }
+		posY += 18;
 		i++;
 	}
 
@@ -286,6 +291,7 @@ void displayTempSensors(short page) {
 
 
 void displayUnknownTempSensors() {
+
 	if (inErrorState) { // don't show windows in error state
 		return;
 	}
@@ -294,14 +300,15 @@ void displayUnknownTempSensors() {
 		tft.setCursor(1, 1);
 		tft.setTextSize(2);
 		tft.setTextColor(ST7735_RED);
-		tft.print("Neue Thermometer");
+		tft.print("Neu Temp.");
 		tft.setTextColor(ST7735_WHITE);
+    tft.setTextSize(1);
        for (int i = 0; i < 16; i++){
-    	   tft.setCursor(posY, 1);
+    	   tft.setCursor( 1, posY);
     	   char  name [24];
     	   getStringForSensorAddress(name, unknown_ds18b20_sensors[i]);
     	   tft.print(name);
-		   posY += 16;
+		   posY += 9;
        }
 
 

@@ -71,7 +71,7 @@
 
 #define TIME_UNTIL_DISPLAY_OFF 300
 
-#define TEMPERATURE_MEASURE_INTERVALL   5000//360000 //ms
+#define TEMPERATURE_MEASURE_INTERVALL   300000 //ms
 
 #define ONE_WIRE_BUS 2 // Pin serving as data port for the sensors.
 

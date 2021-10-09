@@ -66,28 +66,35 @@ void initTemperatureCheck() {
 
 void requestTemperatures() {
 
+ //dallasSensors.begin();
+ 
 	short indexUnknownSensors = 0;
 	if (millis() > lastMeasurement + TEMPERATURE_MEASURE_INTERVALL) {
+      for (short i = 0; i < 16; i++){
+         for (short j = 0; j < 8; j++){ 
+           unknown_ds18b20_sensors [i][j]= 0;
+          }
+        }
 		lastMeasurement = millis();
 
 		byte addr[BYTE_SIZE_ADDRESS];
 
 		dallasSensors.requestTemperatures(); // Send the command to get temperature readings
 
-		for (uint8_t i = 0; i < dallasSensors.getDS18Count(); i++) {
-
+		for (uint8_t i = 0; i < dallasSensors.getDeviceCount(); i++) {
 			float temp = dallasSensors.getTempCByIndex(i);
 			dallasSensors.getAddress(addr, i);
 			short index = getIndexForSensorAddress(addr);
 
 			if (index < 255){
 			ds18b20_sensors[index].lastTemperatur = temp;
-			delay (100);
 			sendTemperatureUpdate(ds18b20_sensors[index].temperatureGA, temp);
 			} else { // sensor not in sensors list
-				for (short i = 0; i++; i < 8){
-					unknown_ds18b20_sensors[indexUnknownSensors++][i] = addr[i];
+				for (short i = 0; i<8; i++){
+					unknown_ds18b20_sensors[indexUnknownSensors][i] = addr[i];
 				}
+       indexUnknownSensors++;
+        if(indexUnknownSensors > 15) return;
 			}
 
 		}
